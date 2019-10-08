@@ -1,6 +1,7 @@
 """Generate Markov text from text files."""
 
 from random import choice
+import sys, string
 
 
 def open_and_read_file(file_path):
@@ -49,12 +50,12 @@ def make_chains(text_string):
     for line in line_list:
         words_list.extend(line.split(' '))
 
-    for i in range(len(words_list) - 2):
+    for i in range(len(words_list) - 3):
 
-        key_tuple = tuple(words_list[i:(i+2)])
+        key_tuple = tuple(words_list[i:(i+3)])
         chains[key_tuple] = chains.get(key_tuple, [])
-        chains[key_tuple].append(words_list[i + 2])
-
+        chains[key_tuple].append(words_list[i + 3])
+    print(chains)
     return chains
 
 
@@ -64,22 +65,40 @@ def make_text(chains):
     words = []
 
     key_tuple = choice(list(chains.keys()))
-    words.extend(list(key_tuple))
-    next_word = choice(chains[starting_tuple])
+
+    for word in key_tuple:
+        words.append(word)
+        if contains_punctuation(word):
+            return " ".join(words)
+
+    next_word = choice(chains[key_tuple])
     words.append(next_word)
+    if contains_punctuation(next_word):
+        return " ".join(words)
 
     # Iterate through markov chain to randomly get next word.
     # Append the next word to the word list.  
     while next_word != '':
-        next_tuple = (key_tuple[1], next_word)
+        next_tuple = (key_tuple[1], key_tuple[2], next_word)
         next_word = choice(chains[next_tuple])
         words.append(next_word)
+        if contains_punctuation(next_word):
+            return " ".join(words)
+        
         key_tuple = next_tuple
+       
 
     return " ".join(words)
 
+def contains_punctuation(word):
 
-input_path = "gettysburg.txt"
+    punctuations = string.punctuation
+    for letter in word:
+        if letter in punctuations:
+            return True
+
+
+input_path = "green-eggs.txt"
 
 # Open the file and turn it into one long string
 input_text = open_and_read_file(input_path)
