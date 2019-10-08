@@ -55,7 +55,7 @@ def make_chains(text_string):
         key_tuple = tuple(words_list[i:(i+3)])
         chains[key_tuple] = chains.get(key_tuple, [])
         chains[key_tuple].append(words_list[i + 3])
-    print(chains)
+
     return chains
 
 
@@ -98,10 +98,12 @@ def contains_punctuation(word):
             return True
 
 
-input_path = "green-eggs.txt"
-
-# Open the file and turn it into one long string
-input_text = open_and_read_file(input_path)
+# input_path = "green-eggs.txt"
+input_text = ''
+for filename in sys.argv:
+    if '.txt' in filename:
+        # Open the file and turn it into one long string
+        input_text += open_and_read_file(filename)
 
 # Get a Markov chain
 chains = make_chains(input_text)
