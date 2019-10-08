@@ -43,13 +43,17 @@ def make_chains(text_string):
 
     chains = {}
 
-    words_list = text_string.split('\n')
-    words_list2 = []
-    
-    for line in words_list:
-        words_list2.extend(line.split(' '))
-    # words_list = text_string.split(' ')
-    print(words_list2)
+    line_list = text_string.split('\n')
+    words_list = []
+
+    for line in line_list:
+        words_list.extend(line.split(' '))
+
+    for index in enumerate(words_list):
+        key_tuple = tuple(words_list[i], words_list[i + 1])
+        chains[key_tuple] = chains.get(key_tuple, None)
+    print(chains)
+
     return chains
 
 
