@@ -63,17 +63,18 @@ def make_text(chains):
 
     words = []
 
-    starting_tuple = choice(list(chains.keys()))
-    words.extend(list(starting_tuple))
+    key_tuple = choice(list(chains.keys()))
+    words.extend(list(key_tuple))
     next_word = choice(chains[starting_tuple])
     words.append(next_word)
 
-
+    # Iterate through markov chain to randomly get next word.
+    # Append the next word to the word list.  
     while next_word != '':
-        next_tuple = (starting_tuple[1], next_word)
+        next_tuple = (key_tuple[1], next_word)
         next_word = choice(chains[next_tuple])
         words.append(next_word)
-        starting_tuple = next_tuple
+        key_tuple = next_tuple
 
     return " ".join(words)
 
