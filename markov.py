@@ -64,7 +64,8 @@ def make_text(chains):
 
     words = []
 
-    # your code goes here
+    new_tuple = random.choice(chains)
+    print(new_tuple)
 
     return " ".join(words)
 
