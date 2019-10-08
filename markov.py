@@ -49,9 +49,11 @@ def make_chains(text_string):
     for line in line_list:
         words_list.extend(line.split(' '))
 
-    for index in enumerate(words_list):
-        key_tuple = tuple(words_list[i], words_list[i + 1])
-        chains[key_tuple] = chains.get(key_tuple, None)
+    for i in range(len(words_list) - 2):
+
+        key_tuple = tuple(words_list[i:(i+2)])
+        chains[key_tuple] = chains.get(key_tuple, [])
+        chains[key_tuple].append(words_list[i + 2])
     print(chains)
 
     return chains
