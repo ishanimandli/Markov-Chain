@@ -64,22 +64,26 @@ def make_text(chains):
 
     words = []
 
+    # Check first word in tuple is capitalized.
     key_tuple = choice(list(chains.keys()))
     while not key_tuple[0][0].isupper():
         key_tuple = choice(list(chains.keys()))
 
+    # Check for punctuation in a word.
     for word in key_tuple:
         words.append(word)
         if contains_punctuation(word):
             return " ".join(words)
 
+    # Randomly choose next possible word and append to list of words.
     next_word = choice(chains[key_tuple])
     words.append(next_word)
     if contains_punctuation(next_word):
         return " ".join(words)
 
     # Iterate through markov chain to randomly get next word.
-    # Append the next word to the word list.  
+    # Append the next word to the word list.
+    # Break from while loop if word contains a punctuation and return the string.
     while next_word != '':
         next_list = list(key_tuple[1:])
         next_list.append(next_word)
@@ -95,6 +99,7 @@ def make_text(chains):
 
 
 def contains_punctuation(word):
+    """Return True if word contains punctuation mark."""
 
     for letter in word:
         if letter in set(string.punctuation):
@@ -102,7 +107,6 @@ def contains_punctuation(word):
     return False
 
 
-# input_path = "green-eggs.txt"
 input_text = ''
 for filename in sys.argv:
     if '.txt' in filename:
