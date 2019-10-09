@@ -45,11 +45,7 @@ def make_chains(text_string, n_gram):
 
     chains = {}
 
-    line_list = text_string.split('\n')
-    words_list = []
-
-    for line in line_list:
-        words_list.extend(line.split(' '))
+    words_list = text_string.split()
 
     for i in range(len(words_list) - n_gram):
         key_tuple = tuple(words_list[i:i + n_gram])
@@ -101,8 +97,9 @@ def make_text(chains):
 def contains_punctuation(word):
     """Return True if word contains punctuation mark."""
 
+    punct = {'.', '?', '!'}
     for letter in word:
-        if letter in set(string.punctuation):
+        if letter in punct:
             return True
     return False
 
