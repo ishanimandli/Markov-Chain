@@ -13,11 +13,12 @@ def open_and_read_file(file_path):
 
     f = open(file_path)
     file_string = f.read()
+    f.close()
 
     return file_string
 
 
-def make_chains(text_string):
+def make_chains(text_string, n_gram):
     """Take input text as string; return dictionary of Markov chains.
 
     A chain will be a key that consists of a tuple of (word1, word2)
@@ -50,11 +51,10 @@ def make_chains(text_string):
     for line in line_list:
         words_list.extend(line.split(' '))
 
-    for i in range(len(words_list) - 3):
-
-        key_tuple = tuple(words_list[i:(i+3)])
+    for i in range(len(words_list) - n_gram):
+        key_tuple = tuple(words_list[i:i + n_gram])
         chains[key_tuple] = chains.get(key_tuple, [])
-        chains[key_tuple].append(words_list[i + 3])
+        chains[key_tuple].append(words_list[i + n_gram])
 
     return chains
 
@@ -79,23 +79,26 @@ def make_text(chains):
     # Iterate through markov chain to randomly get next word.
     # Append the next word to the word list.  
     while next_word != '':
-        next_tuple = (key_tuple[1], key_tuple[2], next_word)
+        next_list = list(key_tuple[1:])
+        next_list.append(next_word)
+        next_tuple = tuple(next_list)
         next_word = choice(chains[next_tuple])
         words.append(next_word)
+
         if contains_punctuation(next_word):
             return " ".join(words)
-        
         key_tuple = next_tuple
        
 
     return " ".join(words)
 
+
 def contains_punctuation(word):
 
-    punctuations = string.punctuation
     for letter in word:
-        if letter in punctuations:
+        if letter in set(string.punctuation):
             return True
+    return False
 
 
 # input_path = "green-eggs.txt"
@@ -106,7 +109,7 @@ for filename in sys.argv:
         input_text += open_and_read_file(filename)
 
 # Get a Markov chain
-chains = make_chains(input_text)
+chains = make_chains(input_text, int(input("What n_gram would you want? ")))
 
 # Produce random text
 random_text = make_text(chains)
