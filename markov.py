@@ -65,6 +65,8 @@ def make_text(chains):
     words = []
 
     key_tuple = choice(list(chains.keys()))
+    while not key_tuple[0][0].isupper():
+        key_tuple = choice(list(chains.keys()))
 
     for word in key_tuple:
         words.append(word)
@@ -88,7 +90,6 @@ def make_text(chains):
         if contains_punctuation(next_word):
             return " ".join(words)
         key_tuple = next_tuple
-       
 
     return " ".join(words)
 
